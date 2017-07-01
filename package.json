@@ -1,0 +1,23 @@
+{
+  "name": "swiss-calendar",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "mobx": "^3.1.16",
+    "mobx-react": "^4.2.2",
+    "moment": "^2.18.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-decorators-legacy":"*",
+    "react-app-rewired": "^1.0.5",    
+    "react-scripts": "1.0.10"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test --env=jsdom",
+    "eject": "react-app-rewired eject"
+  }
+}
