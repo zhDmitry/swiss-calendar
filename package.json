@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@storybook/addon-options": "^3.1.6",
     "gh-pages": "^1.0.0",
     "mobx": "^3.1.16",
     "mobx-react": "^4.2.2",
@@ -11,6 +12,7 @@
     "react-dom": "^15.6.1"
   },
   "devDependencies": {
+    "@storybook/react": "^3.1.7",
     "babel-plugin-transform-decorators-legacy": "*",
     "react-app-rewired": "^1.0.5",
     "react-scripts": "1.0.10"
@@ -19,9 +21,11 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "predeploy:st": "npm run build",
+    "deploy:st": "gh-pages -d storybook-static",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public"
   }
 }

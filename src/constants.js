@@ -9,4 +9,4 @@ export const DAYS = [
 ];
 
 export const cellsCount = 24;
-export const minutesPerRange = 1;
+export const unitsPerRange = 1;

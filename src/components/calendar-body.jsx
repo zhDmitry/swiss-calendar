@@ -1,18 +1,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Cell from "./cell.jsx";
-import { DAYS, minutesPerRange , cellsCount} from "../constants";
 
-const emptyArray = new Array(cellsCount).fill(0);
-const CalendarBody = ({ init, onMouseMove, onMouseDown }) => {
+const CalendarBody = ({ init, onMouseMove, onMouseDown, emptyArray, days, unitsPerRange }) => {
   return (
     <tbody ref={init} onMouseMove={onMouseMove} onMouseDown={onMouseDown}>
-      {DAYS.map((m, k) => {
+      {days.map((m, k) => {
         return (
           <tr key={k}>
             {emptyArray.map((el, i) => {
-              const start = i * minutesPerRange + minutesPerRange;
-              const end = (i + 1) * minutesPerRange;
+              const start = i * unitsPerRange + unitsPerRange;
               return <Cell key={i} day={m.key} range={start} />;
             })}
           </tr>

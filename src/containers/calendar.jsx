@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { inject } from "mobx-react";
+import types from "prop-types";
+import { inject, useStaticRendering } from "mobx-react";
 import CalendarBody from "../components/calendar-body";
 import AllDayCell from "../components/all-day-cell";
 import MonthCell from "../components/month-cell";
-import { DAYS, cellsCount } from "../constants";
+import { IDerivationState } from "mobx";
 
 const shouldRenderHours = i => i % 3 === 0;
 
@@ -13,7 +14,7 @@ const parseRangeFromAttr = el => {
 };
 
 @inject("store")
-class App extends Component {
+class Calendar extends Component {
   x1 = 0;
   y1 = 0;
   x2 = 0;
@@ -57,6 +58,10 @@ class App extends Component {
       endDay: day2
     });
   };
+
+  componentWillMount() {
+    this.emptyArray = new Array(this.props.cellsCount).fill(0);
+  }
   componentDidMount() {
     window.onmouseup = e => {
       if (this.isMousePressed) {
@@ -72,24 +77,27 @@ class App extends Component {
     return (
       <th className={displayHours ? "border-left" : ""} key={i}>
         <div>
-          {shouldRenderHours(i) ? h + ":00" : ""}
+          {displayHours ? h + ":00" : ""}
         </div>
         <div style={{ height: 17 }} />
       </th>
     );
   }
-  renderBodyHeader() {
+  renderBodyHeader = () => {
     const res = [];
-    for (let i = 0; i < cellsCount; i++) {
-      const elem = this.renderHeader(i);
+    for (let i = 0; i < this.props.cellsCount; i++) {
+      const elem =
+        (this.props.renderHeader &&
+          this.props.renderHeader(i, i * this.props.unitsPerRange)) ||
+        this.renderHeader(i, this.props.cellsCount * this.props.unitsPerRange);
       res.push(elem);
     }
     return res;
-  }
-  renderMonths() {
+  };
+  renderMonths = () => {
     return (
       <tbody>
-        {DAYS.map(el =>
+        {this.props.days.map(el =>
           <tr key={el.key}>
             <MonthCell day={el} />
             <AllDayCell day={el} />
@@ -97,11 +105,15 @@ class App extends Component {
         )}
       </tbody>
     );
-  }
+  };
   render() {
     return (
       <div className="calendar-container">
-        <div ref={r => (this.selectionDiv = r)} id="selection" hidden />
+        <div className="fake-screen-wrapper">
+          <div className="fake-screen">
+            <div ref={r => (this.selectionDiv = r)} id="selection" hidden />
+          </div>
+        </div>
         <table className="calendar-header">
           <thead>
             <tr>
@@ -114,21 +126,33 @@ class App extends Component {
           </thead>
           {this.renderMonths()}
         </table>
-        <table className="calendar-body">
-          <thead>
-            <tr>
-              {this.renderBodyHeader()}
-            </tr>
-          </thead>
-          <CalendarBody
-            init={r => (this.table = r)}
-            onMouseDown={this.onMouseDown}
-            onMouseMove={this.onMouseMove}
-          />
-        </table>
+        <div className="calendar-body-wrapper">
+          <table className="calendar-body">
+            <thead>
+              <tr>
+                {this.renderBodyHeader()}
+              </tr>
+            </thead>
+            <CalendarBody
+              init={r => (this.table = r)}
+              emptyArray={this.emptyArray}
+              days={this.props.days}
+              unitsPerRange={this.props.unitsPerRange}
+              onMouseDown={this.onMouseDown}
+              onMouseMove={this.onMouseMove}
+            />
+          </table>
+        </div>
       </div>
     );
   }
 }
 
-export default App;
+Calendar.propTypes = {
+  days: types.object.isRequired,
+  celsCount: types.number.isRequired,
+  unitsPerRange: types.number.isRequired,
+  renderHeader: types.func.isRequired
+};
+
+export default Calendar;
