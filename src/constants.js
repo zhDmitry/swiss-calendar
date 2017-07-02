@@ -8,5 +8,5 @@ export const DAYS = [
   { title: "SU", key: "su" }
 ];
 
-export const cellsCount = 48;
-export const minutesPerRange = 30;
+export const cellsCount = 24;
+export const minutesPerRange = 1;

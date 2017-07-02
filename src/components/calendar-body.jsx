@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Cell from "./Cell";
+import Cell from "./cell.jsx";
 import { DAYS, minutesPerRange , cellsCount} from "../constants";
 
 const emptyArray = new Array(cellsCount).fill(0);

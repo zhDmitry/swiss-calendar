@@ -41,6 +41,7 @@ class CalendarStore {
       this.valueSelectedAllDay[end] = true;
       this.valueUnselectedAllDay[end] = false;
     }
+    this.initData(initialState);
   }
 
   @action
@@ -72,26 +73,33 @@ class CalendarStore {
       touched: v.length > 0
     }));
   }
+  reduceDay(acc, el) {
+    const key = Number(el[0]);
+    const prevElem = acc[acc.length - 1];
+    if (prevElem && prevElem.et === key - minutesPerRange) {
+      prevElem.et = key;
+    } else {
+      acc.push({
+        bt: key - minutesPerRange,
+        et: key
+      });
+    }
+    return acc;
+  }
 
   save() {
-    const res = this.cellData.entries().reduce((acc, [key, val]) => {
-      acc[key] = val.entries().filter(el => el[1]).reduce((acc, el) => {
-        const key = Number(el[0]);
-        const prevElem = acc[acc.length - 1];
-        // console.log(prevElem.et, prevElem.et + minutesPerRange);
-        if (prevElem && prevElem.et === key - minutesPerRange) {
-          prevElem.et = key;
-        } else {
-          acc.push({
-            bt: key - minutesPerRange,
-            et: key
-          });
-        }
-        return acc;
-      }, []);
-      return acc;
+    const res = this.cellData.entries().reduce((dayResult, [mkey, val]) => {
+      dayResult[mkey] = val
+        .entries()
+        .filter(el => el[1])
+        .sort((a, b) => {
+          return Number(a[0]) - Number(b[0]);
+        })
+        .reduce(this.reduceDay, []);
+      return dayResult;
     }, {});
     console.log(res);
+    return res;
   }
   clear() {
     this.initData(defaultData);
@@ -108,8 +116,4 @@ class CalendarStore {
   }
 }
 
-export const store = new CalendarStore();
-store.initData(defaultData);
-console.log(store);
-window.store = store;
-export default store;
+export default new CalendarStore(defaultData);

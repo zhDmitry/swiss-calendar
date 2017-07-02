@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { inject } from "mobx-react";
-import CalendarBody from "./CalendarBody";
-import AllDayCell from "./AllDayCell";
-import MonthCell from "./MonthCell";
+import CalendarBody from "../components/calendar-body";
+import AllDayCell from "../components/all-day-cell";
+import MonthCell from "../components/month-cell";
 import { DAYS, cellsCount } from "../constants";
 
 const shouldRenderHours = i => i % 3 === 0;
@@ -100,18 +100,21 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
+      <div className="calendar-container">
         <div ref={r => (this.selectionDiv = r)} id="selection" hidden />
-        <table style={{ display: "inline" }} className="calendar-header">
+        <table className="calendar-header">
           <thead>
             <tr>
               <th />
-              <th>All day</th>
+              <th>
+                <span>ALL DAY</span>
+                <div style={{ height: 17 }} />
+              </th>
             </tr>
           </thead>
           {this.renderMonths()}
         </table>
-        <table style={{ display: "inline" }} className="calendar-body">
+        <table className="calendar-body">
           <thead>
             <tr>
               {this.renderBodyHeader()}

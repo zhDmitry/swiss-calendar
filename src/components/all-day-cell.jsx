@@ -11,7 +11,10 @@ class Cell extends React.PureComponent {
       <td
         className={selected ? "selected" : ""}
         onClick={() => store.toggleAllDay(day.key)}
-      />
+      >
+        {selected ?  "✔︎" : ""}
+      
+      </td>
     );
   }
 }
