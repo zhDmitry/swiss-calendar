@@ -21,7 +21,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "predeploy:st": "npm run build",
+    "predeploy:st": "npm run build-storybook",
     "deploy:st": "gh-pages -d storybook-static",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject",
